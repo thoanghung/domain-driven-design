@@ -1,0 +1,138 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "ts-node": "ts-node --transpile-only",
+    "lint:check": "eslint \"{src,test}/**/*.ts\"",
+    "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "prettier:check": "yarn prettier --check \"{src,test}/**/*.ts\"",
+    "prettier:fix": "yarn prettier --write \"{src,test}/**/*.ts\"",
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./typeOrm.config.ts",
+    "typeorm:generate-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:generate ./src/infrastructure/rdb/migration/$npm_config_name",
+    "typeorm:create-migration": "npm run typeorm -- migration:create ./src/infrastructure/rdb/migration/$npm_config_name",
+    "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert",
+    "rdb:test:migration:run": "NEWANIGRAM_RDB_DATABASE=newanigram_test yarn ts-node $(npm bin)/typeorm migration:run",
+    "rdb:test:migration:show": "NEWANIGRAM_RDB_DATABASE=newanigram_test yarn ts-node $(npm bin)/typeorm migration:show",
+    "rdb:test:seed:run": "NEWANIGRAM_RDB_DATABASE=newanigram_test yarn ts-node $(npm bin)/typeorm migration:generate:run -c seed",
+    "rdb:test:schema:drop": "NEWANIGRAM_RDB_DATABASE=newanigram_test yarn ts-node $(npm bin)/typeorm schema:drop",
+    "rdb:test:remake": "NEWANIGRAM_RDB_DATABASE=newanigram_test yarn rdb:schema:drop && yarn rdb:migration:run && yarn rdb:seed:run",
+    "rdb:test:migration:revert": "NEWANIGRAM_RDB_DATABASE=newanigram_test yarn ts-node $(npm bin)/typeorm migration:revert",
+    "start:prod": "node dist/main",
+    "test": "NEWANIGRAM_RDB_DATABASE=newanigram_test jest --detectOpenHandles",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
+    "moduleNameMapper": {
+      "@domain/(.*)$": [
+        "<rootDir>/domain/$1"
+      ],
+      "@infrastructure/(.*)$": [
+        "<rootDir>/infrastructure/$1"
+      ],
+      "@usecase/(.*)$": [
+        "<rootDir>/usecase/$1"
+      ],
+      "@view/(.*)$": [
+        "<rootDir>/view/$1"
+      ],
+      "@config/(.*)$": [
+        "<rootDir>/config/$1"
+      ],
+      "@utils/(.*)$": [
+        "<rootDir>/utils/$1"
+      ],
+      "@constants/(.*)$": [
+        "<rootDir>/constants/$1"
+      ]
+    },
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest",
+      "\\.(jpg|jpeg)": "<rootDir>/utils/fileTransformer.js"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "@nestjs/class-transformer": "^0.4.0",
+    "@nestjs/common": "^10.3.8",
+    "@nestjs/config": "^3.2.2",
+    "@nestjs/core": "^10.3.8",
+    "@nestjs/platform-express": "^10.3.8",
+    "@nestjs/swagger": "^7.3.1",
+    "@nestjs/typeorm": "^10.0.2",
+    "aws-sdk": "^2.1610.0",
+    "axios": "^1.6.8",
+    "bcrypt": "^5.1.1",
+    "dayjs": "^1.11.11",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "log4js": "^6.9.1",
+    "maskdata": "^1.3.1",
+    "md5": "^2.3.0",
+    "mysql2": "^3.9.7",
+    "reflect-metadata": "^0.2.2",
+    "rimraf": "^5.0.5",
+    "rxjs": "^7.8.1",
+    "swagger-ui-express": "^5.0.0",
+    "typeorm": "^0.3.20",
+    "zod": "^3.23.5"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.3.2",
+    "@nestjs/schematics": "^10.1.1",
+    "@nestjs/testing": "^10.3.8",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/md5": "^2.3.5",
+    "@types/multer": "^1.4.11",
+    "@types/node": "^20.12.7",
+    "@types/pluralize": "^0.0.33",
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "husky": "^9.0.11",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.2",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.4.5"
+  }
+}
